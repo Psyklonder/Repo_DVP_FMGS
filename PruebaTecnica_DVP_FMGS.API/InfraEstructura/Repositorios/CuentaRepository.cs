@@ -31,7 +31,7 @@ namespace PruebaTecnica_DVP_FMGS.API.InfraEstructura.Repositorios
             var existeNombreUsuario = await _db.Usuario.Where(x => x.Usuario1 == Request.NombreUsuario.Trim()).FirstOrDefaultAsync();
             if (existeNombreUsuario != null)
             {
-                throw new ArgumentException($"El nombre de usuario suministrado= '{Request.NombreUsuario}' ya se encuentra en uso.");
+                throw new ArgumentException($"Nombre de usuario '{Request.NombreUsuario}' no disponible.");
             }
             #endregion
 
