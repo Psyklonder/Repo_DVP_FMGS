@@ -1,8 +1,64 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css" />
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Bienvenido</h1>
+    <table id="TablaUsuarios" class="table table-striped hover" style="width:100%" hover>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Correo electrónico</th>
+                <th>Fecha de creación</th>
+                <th>Nombre completo</th>
+                <th>Identificación</th>
+
+            </tr>
+        </thead>
+        <tbody style="text-align:left !important">
+
+        </tbody>
+       
+    </table>
+    
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $.ajax({
+                url: '@Url.Action("ConsultarPersonas", "Home")',
+                type: 'GET',
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                data: null,
+                beforeSend: function () {
+                    
+                },
+                success: function (data) {
+                    
+                    $.each(data, function (ind, elem) {
+                        $("#TablaUsuarios").find('tbody').append($(
+                            `<tr><td>${elem.id}</td><td>${elem.email}</td><td>${elem.fechaCreacion}</td><td>${elem.nombreCompleto}</td><td>${elem.identificacion}</td></tr>`
+                        ));
+                    });
+
+                    new DataTable('#TablaUsuarios');
+                },
+                error: function (error) {
+                    var obj = error.responseText;
+                },
+                complete: function () {
+                    
+                }
+            });
+           
+        });
+
+    </script>
 </div>
