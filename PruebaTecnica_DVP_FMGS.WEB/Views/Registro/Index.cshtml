@@ -109,6 +109,32 @@
 
         $(document).ready(function () {
 
+            $("#Nombres").on("keyup", function () {
+                $("#NombresRequerido").text('')
+            });
+            $("#Apellidos").on("keyup", function () {
+                $("#ApellidosRequerido").text('')
+            });
+            $("#Email").on("keyup", function () {
+                $("#EmailRequerido").text('')
+            });
+            $("#TipoIdentificacion").on("change", function () {
+                $("#TipoIdentificacionRequerido").text('')
+            });
+            $("#NumeroDocumento").on("keyup", function () {
+                $("#NumeroDocumentoRequerido").text('')
+            });
+            $("#NombreUsuario").on("keyup", function () {
+                $("#NombreUsuarioRequerido").text('')
+            });
+            $("#Password").on("keyup", function () {
+                $("#PasswordRequerido").text('')
+            });
+            $("#PasswordRepetir").on("keyup", function () {
+                $("#PasswordRepetirRequerido").text('')
+            });
+
+
             $.ajax({
                 url: '@Url.Action("ObtenerTiposIdentificacion", "Registro")',
                 type: 'GET',
@@ -199,13 +225,12 @@
                             $("#BtnRegistrar>span:last-child").text('Procesando');
                         },
                         success: function (data) {
-
                             $("#AlertSuccess").removeClass('d-none');
                             $("#AlertSuccess > div > span").text(data.value);
                             $("#AlertDanger").addClass('d-none');
+                            Limpiarinputs();
                         },
                         error: function (error) {
-
                             $("#AlertDanger").removeClass('d-none');
                             $("#AlertDanger > div > span").text(error.responseText);
                             $("#AlertSuccess").addClass('d-none');
@@ -218,6 +243,27 @@
                 }
 
 
+            });
+
+            function Limpiarinputs() {
+                $("#Nombres").val('');
+                $("#Apellidos").val('');
+                $("#Email").val('');
+                $("#TipoIdentificacion").val('0');
+                $("#NumeroDocumento").val('');
+                $("#NombreUsuario").val('');
+                $("#Password").val('');
+                $("#PasswordRepetir").val('');
+            }
+
+            $(".form-select").on("change", function () {
+                $("#AlertSuccess").addClass('d-none');
+                $("#AlertDanger").addClass('d-none');
+            });
+            
+            $(".form-control").on("keyup", function () {
+                $("#AlertSuccess").addClass('d-none');
+                $("#AlertDanger").addClass('d-none');
             });
 
         });

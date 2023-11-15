@@ -43,12 +43,24 @@ namespace PruebaTecnica_DVP_FMGS.API.InfraEstructura.Repositorios
             var usuario = CuentaMapper.MapearUsuarioRequest(Request);
             usuario.FechaCreacion = fechaActual;
 
-            await _db.Persona.AddAsync(persona);
-            await _db.SaveChangesAsync();
+            var transaction = _db.Database.BeginTransaction();
+            try
+            {
+                await _db.Persona.AddAsync(persona);
+                await _db.SaveChangesAsync();
 
-            usuario.PersonaId = persona.Id;
-            await _db.Usuario.AddAsync(usuario);
-            await _db.SaveChangesAsync();
+                usuario.PersonaId = persona.Id;
+                await _db.Usuario.AddAsync(usuario);
+                await _db.SaveChangesAsync();
+
+                await transaction.CommitAsync();
+            }
+            catch (Exception)
+            {
+                transaction.Rollback();
+                throw;
+            }
+          
         }
 
         public async Task<List<PersonaResponseDTO>> ConsultarPersonas()
