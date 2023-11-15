@@ -1,0 +1,121 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="es-co">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+</head>
+<body style="background-color: #ddd!important">
+    <br />
+    <div class="container bg-light">
+        <br />
+        <div class="card">
+            <div class="card-header">
+                <h5>Registro de usuarios</h5>
+            </div>
+            <div class="card-body">
+                <h5>Datos personales</h5>
+                <div class="row">
+                    <div class="col-md-4">
+                        <label for="Nombres" class="control-label">Nombres</label>
+                        <input id="Nombres" type="text" placeholder="" class="form-control" />
+                        <span class="text-danger" id="NombresRequerido"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="Apellidos" class="control-label">Apellidos</label>
+                        <input id="Apellidos" type="text" placeholder="" class="form-control" />
+                        <span class="text-danger" id="ApellidosRequerido"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="Email" class="control-label">Correo electrónico</label>
+                        <input id="Email" type="email" placeholder="" class="form-control" />
+                        <span class="text-danger" id="EmailRequerido"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="TipoIdentificacion" class="control-label">Tipo de identificación</label>
+                        <select id="TipoIdentificacion" class="form-select" aria-label="Default select example">
+                            <option selected value="0">Seleccione...</option>
+                        </select>
+                        <span class="text-danger" id="TipoIdentificacionRequerido"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="NumeroDocumento" class="control-label">No. documento</label>
+                        <input id="NumeroDocumento" type="email" placeholder="" class="form-control" />
+                        <span class="text-danger" id="NumeroDocumentoRequerido"></span>
+                    </div>
+                </div>
+                <hr />
+                <h5>Cuenta</h5>
+                <div class="row">
+                    <div class="col-md-4">
+                        <label for="NombreUsuario" class="control-label">Nombre de usuario</label>
+                        <input id="NombreUsuario" type="text" placeholder="" class="form-control" />
+                        <span class="text-danger" id="NombreUsuarioRequerido"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="Password" class="control-label">Contraseña</label>
+                        <input id="Password" type="password" placeholder="" class="form-control" />
+                        <span class="text-danger" id="PasswordRequerido"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="PasswordRepetir" class="control-label">Confirmar contraseña</label>
+                        <input id="PasswordRepetir" type="password" placeholder="" class="form-control" />
+                        <span class="text-danger" id="PasswordRepetirRequerido"></span>
+                    </div>
+                </div>
+                <hr />
+                <button id="BtnRegistrar" type="button" class="btn btn-primary">Registrar</button>
+                <button id="BtnCancelar" type="button" class="btn btn-secondary">Cancelar</button>
+            </div>
+        </div>
+        <br />
+
+    </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            $.ajax({
+                url: '@Url.Action("ObtenerTiposIdentificacion", "Registro")',
+                type: 'GET',
+                dataType: 'json',
+                contentType: 'application/json; charset=utf-8',
+                data: null,
+                beforeSend: function () {
+                    
+                },
+                success: function (data) {                  
+                    var tipos = $("#TipoIdentificacion");
+                    $.each(data, function (ind, elem) {                        
+                        tipos.append($("<option />").val(elem.id).text(elem.nombre));
+                    });                 
+                },
+                error: function (error) {
+                    var obj = error.responseText;                  
+                },
+                complete: function () {                  
+
+                }
+            });
+
+            $("#BtnCancelar").click(function (event) { 
+                event.preventDefault();
+                var url = '@Url.Action("Index", "InicioSesion")';
+                window.location.href = url;
+            });
+
+        });
+
+    </script>
+</body>
+</html>
